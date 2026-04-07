@@ -10,11 +10,11 @@ const links = [
   { to: '/profile', label: '个人中心' },
 ]
 
-/** 当前路由是首页时，若鼠标正悬在「非首页」链接上，则暂时不显示首页的选中态 */
-function showHomeActive(isRouteActive, hoveredTo) {
+/** 当悬停其他链接时，暂时隐藏当前路由的活跃态，让悬停目标获得唯一高亮 */
+function shouldShowActive(isRouteActive, hoveredTo, to) {
   if (!isRouteActive) return false
   if (hoveredTo == null) return true
-  return hoveredTo === '/'
+  return hoveredTo === to
 }
 
 export default function Navbar() {
@@ -48,7 +48,7 @@ export default function Navbar() {
               key={to}
               to={to}
               className={({ isActive }) =>
-                showHomeActive(isActive, hoveredTo)
+                shouldShowActive(isActive, hoveredTo, to)
                   ? 'app-nav-link app-nav-link--active'
                   : 'app-nav-link'
               }
@@ -63,7 +63,10 @@ export default function Navbar() {
         <div className="app-header__right">
           <div className="app-header__searchRow">
             <label className="app-search" aria-label="搜索">
-              <span className="app-search__icon" aria-hidden="true" />
+              <svg className="app-search__icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="11" cy="11" r="8" />
+                <line x1="21" y1="21" x2="16.65" y2="16.65" />
+              </svg>
               <input
                 className="app-search__input"
                 value={query}
